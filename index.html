@@ -30,63 +30,7 @@
       min-height: 100vh;
     }
 
-    /* Header */
-    .site-header {
-      background: var(--purple-dark);
-      padding: 20px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .wordmark {
-      font-family: 'Marcellus', serif;
-      font-size: 18px;
-      color: var(--lavender);
-      text-decoration: none;
-    }
-    .header-cta {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--purple-dark);
-      background: var(--lavender);
-      padding: 8px 20px;
-      border-radius: 100px;
-      text-decoration: none;
-      transition: background 0.2s;
-    }
-    .header-cta:hover { background: #d9a0f5; }
-
-    /* Hero */
-    .hero {
-      background: var(--purple-dark);
-      padding: 60px 40px 56px;
-      text-align: center;
-    }
-    .eyebrow {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--lavender);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .hero h1 {
-      font-family: 'Marcellus', serif;
-      font-size: clamp(28px, 5vw, 44px);
-      color: var(--white);
-      line-height: 1.2;
-      max-width: 680px;
-      margin: 0 auto 16px;
-    }
-    .hero h1 span { color: var(--lavender); }
-    .hero-desc {
-      font-size: 16px;
-      font-weight: 300;
-      color: var(--text-subtle);
-      max-width: 520px;
-      margin: 0 auto;
-      line-height: 1.65;
-    }
+    /* Header and Hero removed — embedded in Webflow page */
 
     /* Progress Bar */
     .progress-wrap {
@@ -387,8 +331,6 @@
     .btn-retake:hover { color: var(--lavender); }
 
     @media (max-width: 600px) {
-      .site-header { padding: 16px 20px; }
-      .hero { padding: 40px 20px 36px; }
       .progress-wrap { padding: 12px 20px; }
       .container { padding: 32px 16px 60px; }
       .results-hero { padding: 36px 24px; }
@@ -400,16 +342,6 @@
 </head>
 <body>
 
-<header class="site-header">
-  <a href="#" class="wordmark">Mariana Salazar</a>
-  <a href="#" class="header-cta">Let's Talk</a>
-</header>
-
-<section class="hero">
-  <p class="eyebrow">Free Tool — Product Management</p>
-  <h1>PM Health <span>Scorecard</span></h1>
-  <p class="hero-desc">15 questions. Instant diagnosis of how your team thinks about product — from discovery and validation to growth, launch, and collaboration.</p>
-</section>
 
 <div class="progress-wrap" id="progressWrap" style="display:none;">
   <div class="progress-meta">
