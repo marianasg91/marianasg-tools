@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PM Health Scorecard — marianasg.com</title>
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --lavender:       #f1befd;
+      --lavender-pale:  #fdf3ff;
+      --lavender-light: #f8dffe;
+      --purple-dark:    #210520;
+      --purple-mid:     #3d1140;
+      --purple-soft:    #6b2a70;
+      --text-body:      #2a1a2e;
+      --text-muted:     #7a5c80;
+      --text-subtle:    #b89dbd;
+      --border:         #e8d0ef;
+      --white:          #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      color: var(--text-body);
+      background: var(--lavender-pale);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .site-header {
+      background: var(--purple-dark);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .wordmark {
+      font-family: 'Marcellus', serif;
+      font-size: 18px;
+      color: var(--lavender);
+      text-decoration: none;
+    }
+    .header-cta {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--purple-dark);
+      background: var(--lavender);
+      padding: 8px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .header-cta:hover { background: #d9a0f5; }
+
+    /* Hero */
+    .hero {
+      background: var(--purple-dark);
+      padding: 60px 40px 56px;
+      text-align: center;
+    }
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--lavender);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: 'Marcellus', serif;
+      font-size: clamp(28px, 5vw, 44px);
+      color: var(--white);
+      line-height: 1.2;
+      max-width: 680px;
+      margin: 0 auto 16px;
+    }
+    .hero h1 span { color: var(--lavender); }
+    .hero-desc {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-subtle);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* Progress Bar */
+    .progress-wrap {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .progress-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .progress-count { font-size: 12px; color: var(--text-subtle); }
+    .progress-bar-track {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--lavender);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    /* Container */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* Section Label */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--purple-soft);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      margin-top: 40px;
+    }
+    .section-label:first-child { margin-top: 0; }
+    .section-dot {
+      width: 6px; height: 6px;
+      background: var(--lavender);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Question Card */
+    .question-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 28px 24px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .question-card.answered {
+      border-color: var(--lavender);
+      box-shadow: 0 2px 12px rgba(241,190,253,0.18);
+    }
+    .question-number {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-subtle);
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .question-text {
+      font-family: 'Marcellus', serif;
+      font-size: 17px;
+      color: var(--text-body);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    /* Options */
+    .options { display: flex; flex-direction: column; gap: 8px; }
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      line-height: 1.45;
+    }
+    .option-label:hover {
+      border-color: var(--purple-soft);
+      background: var(--lavender-pale);
+    }
+    .option-label input[type="radio"] { display: none; }
+    .option-label.selected-0 { border-color: #e8a0a0; background: #fff7f7; }
+    .option-label.selected-1 { border-color: #e0c97a; background: #fffdf0; }
+    .option-label.selected-2 { border-color: var(--lavender); background: var(--lavender-pale); }
+
+    .option-dot {
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 2px;
+      transition: all 0.15s;
+    }
+    .option-label.selected-0 .option-dot { border-color: #d97777; background: #d97777; }
+    .option-label.selected-1 .option-dot { border-color: #c9a820; background: #c9a820; }
+    .option-label.selected-2 .option-dot { border-color: var(--purple-soft); background: var(--purple-soft); }
+    .option-text { font-size: 14px; color: var(--text-body); }
+
+    /* Submit */
+    .submit-wrap { margin-top: 40px; text-align: center; }
+    .btn-submit {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--purple-dark);
+      background: var(--lavender);
+      border: none;
+      padding: 16px 40px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s, transform 0.15s;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .btn-submit.active { opacity: 1; pointer-events: auto; }
+    .btn-submit.active:hover { background: #d9a0f5; transform: translateY(-1px); }
+    .submit-note { font-size: 12px; color: var(--text-subtle); margin-top: 12px; }
+
+    /* Results */
+    #results { display: none; }
+
+    .results-hero {
+      background: var(--purple-dark);
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .results-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--lavender);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .score-display {
+      font-family: 'Marcellus', serif;
+      font-size: clamp(48px, 10vw, 80px);
+      color: var(--lavender);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .score-max { font-size: 16px; color: var(--text-subtle); margin-bottom: 20px; }
+    .results-level {
+      font-family: 'Marcellus', serif;
+      font-size: clamp(20px, 4vw, 28px);
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+    .results-summary {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-subtle);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* Dimension scores */
+    .dim-scores {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .dim-scores h3 {
+      font-family: 'Marcellus', serif;
+      font-size: 16px;
+      color: var(--text-body);
+      margin-bottom: 20px;
+    }
+    .dim-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+    .dim-row:last-child { margin-bottom: 0; }
+    .dim-name { font-size: 13px; font-weight: 500; color: var(--text-body); width: 160px; flex-shrink: 0; }
+    .dim-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .dim-bar-fill { height: 100%; border-radius: 3px; background: var(--lavender); transition: width 1s ease; }
+    .dim-bar-fill.low  { background: #e8a0a0; }
+    .dim-bar-fill.mid  { background: #e0c97a; }
+    .dim-bar-fill.high { background: var(--lavender); }
+    .dim-score-label { font-size: 12px; font-weight: 600; color: var(--text-muted); width: 36px; text-align: right; flex-shrink: 0; }
+
+    /* Recommendations */
+    .recs-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .recs-card h3 {
+      font-family: 'Marcellus', serif;
+      font-size: 16px;
+      color: var(--text-body);
+      margin-bottom: 20px;
+    }
+    .rec-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .rec-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .rec-num {
+      width: 28px; height: 28px;
+      background: var(--lavender-pale);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; color: var(--purple-soft);
+      flex-shrink: 0;
+    }
+    .rec-title { font-size: 14px; font-weight: 600; color: var(--text-body); margin-bottom: 4px; }
+    .rec-desc { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+    /* CTA */
+    .results-cta {
+      background: var(--purple-dark);
+      border-radius: 12px;
+      padding: 36px 32px;
+      text-align: center;
+    }
+    .results-cta p {
+      font-family: 'Marcellus', serif;
+      font-size: 20px;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .results-cta .cta-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-subtle);
+      margin-bottom: 24px;
+    }
+    .btn-cta {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--purple-dark);
+      background: var(--lavender);
+      padding: 14px 36px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-cta:hover { background: #d9a0f5; }
+    .btn-retake {
+      display: inline-block;
+      font-size: 13px;
+      color: var(--text-subtle);
+      cursor: pointer;
+      margin-top: 16px;
+      text-decoration: underline;
+      background: none;
+      border: none;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-retake:hover { color: var(--lavender); }
+
+    @media (max-width: 600px) {
+      .site-header { padding: 16px 20px; }
+      .hero { padding: 40px 20px 36px; }
+      .progress-wrap { padding: 12px 20px; }
+      .container { padding: 32px 16px 60px; }
+      .results-hero { padding: 36px 24px; }
+      .dim-name { width: 110px; font-size: 12px; }
+      .recs-card, .dim-scores { padding: 20px; }
+      .results-cta { padding: 28px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#" class="wordmark">Mariana Salazar</a>
+  <a href="#" class="header-cta">Let's Talk</a>
+</header>
+
+<section class="hero">
+  <p class="eyebrow">Free Tool — Product Management</p>
+  <h1>PM Health <span>Scorecard</span></h1>
+  <p class="hero-desc">15 questions. Instant diagnosis of how your team thinks about product — from discovery and validation to growth, launch, and collaboration.</p>
+</section>
+
+<div class="progress-wrap" id="progressWrap" style="display:none;">
+  <div class="progress-meta">
+    <span class="progress-label">Your progress</span>
+    <span class="progress-count" id="progressCount">0 of 15</span>
+  </div>
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<div class="container" id="scorecardForm">
+
+  <!-- ── SECTION 1: Discovery ───────────────────────── -->
+  <div class="section-label"><span class="section-dot"></span>Discovery</div>
+
+  <div class="question-card" id="card-1">
+    <p class="question-number">Q1 of 15</p>
+    <p class="question-text">How does your team stay close to what customers actually experience with your product?</p>
+    <div class="options">
+      <label class="option-label" data-q="1" data-score="0">
+        <input type="radio" name="q1" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">We rely on support tickets and occasional feedback — there's no structured process for hearing from customers</span>
+      </label>
+      <label class="option-label" data-q="1" data-score="1">
+        <input type="radio" name="q1" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We do interviews or surveys occasionally — usually when there's a specific question or before a big launch</span>
+      </label>
+      <label class="option-label" data-q="1" data-score="2">
+        <input type="radio" name="q1" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We have a consistent cadence — regular customer conversations are part of how we work, not a special project</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-2">
+    <p class="question-number">Q2 of 15</p>
+    <p class="question-text">When it comes to understanding your customers, which best describes how your team uses qualitative and quantitative signals?</p>
+    <div class="options">
+      <label class="option-label" data-q="2" data-score="0">
+        <input type="radio" name="q2" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">We rely mostly on one type — either we talk to customers or we look at analytics, but rarely both at once</span>
+      </label>
+      <label class="option-label" data-q="2" data-score="1">
+        <input type="radio" name="q2" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We use both, but separately — conversations and data don't usually inform each other in a structured way</span>
+      </label>
+      <label class="option-label" data-q="2" data-score="2">
+        <input type="radio" name="q2" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We actively triangulate — usage data tells us where to look, conversations tell us why, and we use both to challenge our assumptions</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-3">
+    <p class="question-number">Q3 of 15</p>
+    <p class="question-text">How do customer and user insights actually influence what gets prioritized?</p>
+    <div class="options">
+      <label class="option-label" data-q="3" data-score="0">
+        <input type="radio" name="q3" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">Rarely — insights live in decks or docs that don't make it into product decisions in any traceable way</span>
+      </label>
+      <label class="option-label" data-q="3" data-score="1">
+        <input type="radio" name="q3" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">Sometimes — insights shape some decisions, but the connection to what we build isn't explicit or consistent</span>
+      </label>
+      <label class="option-label" data-q="3" data-score="2">
+        <input type="radio" name="q3" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">Consistently — there's a visible link between what we learn from customers and what ends up on the roadmap, and the team can articulate it</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: Problem Validation ─────────────── -->
+  <div class="section-label"><span class="section-dot"></span>Problem Validation</div>
+
+  <div class="question-card" id="card-4">
+    <p class="question-number">Q4 of 15</p>
+    <p class="question-text">Before committing to build something — regardless of how it gets built — how does your team validate that it's solving the right business problem?</p>
+    <div class="options">
+      <label class="option-label" data-q="4" data-score="0">
+        <input type="radio" name="q4" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">We move from idea to execution based on internal conviction — validation happens after the fact, if at all</span>
+      </label>
+      <label class="option-label" data-q="4" data-score="1">
+        <input type="radio" name="q4" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We discuss it internally and sometimes check with a few customers, but it's informal and inconsistent</span>
+      </label>
+      <label class="option-label" data-q="4" data-score="2">
+        <input type="radio" name="q4" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We make our assumptions about the problem explicit and test them — through conversations, prototypes, or experiments — before committing resources</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-5">
+    <p class="question-number">Q5 of 15</p>
+    <p class="question-text">Does your team maintain a documented list of the product and business assumptions you're currently operating on?</p>
+    <div class="options">
+      <label class="option-label" data-q="5" data-score="0">
+        <input type="radio" name="q5" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">No — assumptions live in people's heads or are never made explicit</span>
+      </label>
+      <label class="option-label" data-q="5" data-score="1">
+        <input type="radio" name="q5" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">Partially — some are documented but there's no consistent process to track, prioritize, or revisit them</span>
+      </label>
+      <label class="option-label" data-q="5" data-score="2">
+        <input type="radio" name="q5" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">Yes — we have an active list of assumptions, ranked by risk and uncertainty, and we review them regularly as a team</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: Roadmap & Prioritization ────────── -->
+  <div class="section-label"><span class="section-dot"></span>Roadmap &amp; Prioritization</div>
+
+  <div class="question-card" id="card-6">
+    <p class="question-number">Q6 of 15</p>
+    <p class="question-text">What best describes how your team decides what to build next?</p>
+    <div class="options">
+      <label class="option-label" data-q="6" data-score="0">
+        <input type="radio" name="q6" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">The loudest stakeholder or most recent customer request drives the agenda — it's hard to say no and priorities shift constantly</span>
+      </label>
+      <label class="option-label" data-q="6" data-score="1">
+        <input type="radio" name="q6" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We apply a prioritization framework (RICE, ICE, etc.) consistently — it brings structure but sometimes feels mechanical, disconnected from strategy</span>
+      </label>
+      <label class="option-label" data-q="6" data-score="2">
+        <input type="radio" name="q6" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We combine structured criteria with product judgment — frameworks inform the conversation, but the team can also articulate the strategic reasoning behind each call</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-7">
+    <p class="question-number">Q7 of 15</p>
+    <p class="question-text">When your team thinks about the roadmap, what's the primary lens?</p>
+    <div class="options">
+      <label class="option-label" data-q="7" data-score="0">
+        <input type="radio" name="q7" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">Features and timelines — we think in terms of what ships and when</span>
+      </label>
+      <label class="option-label" data-q="7" data-score="1">
+        <input type="radio" name="q7" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">A mix — we think about features but also try to connect them to user outcomes, though not always systematically</span>
+      </label>
+      <label class="option-label" data-q="7" data-score="2">
+        <input type="radio" name="q7" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We think about customer outcomes, not feature outputs — whether that means helping new users reach value faster, deepening engagement for existing ones, or protecting retention in a stable base. Our roadmap connects to a specific customer movement, not just a ship date</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-8">
+    <p class="question-number">Q8 of 15</p>
+    <p class="question-text">How does your team handle unplanned requests from sales, CS, or leadership that weren't on the roadmap?</p>
+    <div class="options">
+      <label class="option-label" data-q="8" data-score="0">
+        <input type="radio" name="q8" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">They usually get added — the roadmap gets disrupted regularly and the team loses confidence in commitments</span>
+      </label>
+      <label class="option-label" data-q="8" data-score="1">
+        <input type="radio" name="q8" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We push back sometimes but don't have a clear process — the outcome depends on who's asking</span>
+      </label>
+      <label class="option-label" data-q="8" data-score="2">
+        <input type="radio" name="q8" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We have a defined intake process — requests are evaluated against clear criteria, decisions are communicated transparently, and the team understands why</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: Launch & Impact ─────────────────── -->
+  <div class="section-label"><span class="section-dot"></span>Launch &amp; Impact</div>
+
+  <div class="question-card" id="card-9">
+    <p class="question-number">Q9 of 15</p>
+    <p class="question-text">When your team ships something new, how do you define what success looks like before it goes out?</p>
+    <div class="options">
+      <label class="option-label" data-q="9" data-score="0">
+        <input type="radio" name="q9" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">We don't — success is usually "it shipped without breaking" and we move on to the next thing</span>
+      </label>
+      <label class="option-label" data-q="9" data-score="1">
+        <input type="radio" name="q9" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We have a general idea but it's not written down — we check a few metrics after launch but there's no pre-defined target</span>
+      </label>
+      <label class="option-label" data-q="9" data-score="2">
+        <input type="radio" name="q9" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">Every initiative ships with explicit success metrics defined upfront — adoption, retention impact, or business outcome — and we measure them in the weeks after launch</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-10">
+    <p class="question-number">Q10 of 15</p>
+    <p class="question-text">How does product work with marketing, sales, and customer success when something new is about to launch?</p>
+    <div class="options">
+      <label class="option-label" data-q="10" data-score="0">
+        <input type="radio" name="q10" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">We ship it and notify them — other teams find out when it's already live</span>
+      </label>
+      <label class="option-label" data-q="10" data-score="1">
+        <input type="radio" name="q10" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We share release notes in advance, but there's no coordinated enablement — each team figures out how to communicate it on their own</span>
+      </label>
+      <label class="option-label" data-q="10" data-score="2">
+        <input type="radio" name="q10" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">Launches are coordinated — product prepares internal enablement, marketing has messaging ready, and CS knows how to explain it to customers before it goes live</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-11">
+    <p class="question-number">Q11 of 15</p>
+    <p class="question-text">After a feature launches, what does your team typically do with what it learns?</p>
+    <div class="options">
+      <label class="option-label" data-q="11" data-score="0">
+        <input type="radio" name="q11" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">We move to the next thing — there's no structured review and lessons rarely get captured</span>
+      </label>
+      <label class="option-label" data-q="11" data-score="1">
+        <input type="radio" name="q11" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We discuss it informally but don't have a consistent way to feed those learnings back into the process</span>
+      </label>
+      <label class="option-label" data-q="11" data-score="2">
+        <input type="radio" name="q11" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">Post-launch review is part of the cycle — we evaluate adoption data, iterate based on what we see, and document what we learned for the next initiative</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: Cross-functional Collaboration ──── -->
+  <div class="section-label"><span class="section-dot"></span>Cross-functional Collaboration</div>
+
+  <div class="question-card" id="card-12">
+    <p class="question-number">Q12 of 15</p>
+    <p class="question-text">How does the rest of the organization understand what product is building and why?</p>
+    <div class="options">
+      <label class="option-label" data-q="12" data-score="0">
+        <input type="radio" name="q12" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">They mostly don't — the roadmap lives in product and other teams find out when things ship</span>
+      </label>
+      <label class="option-label" data-q="12" data-score="1">
+        <input type="radio" name="q12" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We share updates periodically, but other teams don't always understand the reasoning behind what's prioritized</span>
+      </label>
+      <label class="option-label" data-q="12" data-score="2">
+        <input type="radio" name="q12" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">The roadmap and its rationale are visible to the organization — other teams understand not just what's coming, but why it matters for the business</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-13">
+    <p class="question-number">Q13 of 15</p>
+    <p class="question-text">How do teams like sales and customer success contribute to product discovery — not just the roadmap?</p>
+    <div class="options">
+      <label class="option-label" data-q="13" data-score="0">
+        <input type="radio" name="q13" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">They send feature requests — product receives them but there's no structured way to turn those signals into insights</span>
+      </label>
+      <label class="option-label" data-q="13" data-score="1">
+        <input type="radio" name="q13" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We have some informal channels but the signal-to-noise ratio is low — it's hard to know what's a real pattern vs. a one-off request</span>
+      </label>
+      <label class="option-label" data-q="13" data-score="2">
+        <input type="radio" name="q13" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We have a process for capturing and synthesizing signals from customer-facing teams — they're active participants in discovery, not just a request queue</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-14">
+    <p class="question-number">Q14 of 15</p>
+    <p class="question-text">Does product have direct access to customers, or does it depend on other teams to mediate that relationship?</p>
+    <div class="options">
+      <label class="option-label" data-q="14" data-score="0">
+        <input type="radio" name="q14" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">Product hears about customers indirectly — through CS summaries, sales notes, or leadership — but rarely talks to them directly</span>
+      </label>
+      <label class="option-label" data-q="14" data-score="1">
+        <input type="radio" name="q14" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">We get access sometimes — usually when another team sets it up — but it's not systematic or regular</span>
+      </label>
+      <label class="option-label" data-q="14" data-score="2">
+        <input type="radio" name="q14" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">Product has direct, ongoing access to customers — interviews, sessions, or usage observation are part of how we work, not a favor we ask for</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="question-card" id="card-15">
+    <p class="question-number">Q15 of 15</p>
+    <p class="question-text">When product decisions create friction with other teams — different priorities, resource constraints, competing timelines — how is that tension handled?</p>
+    <div class="options">
+      <label class="option-label" data-q="15" data-score="0">
+        <input type="radio" name="q15" value="0">
+        <span class="option-dot"></span>
+        <span class="option-text">It escalates or gets avoided — there's no shared framework for resolving cross-functional conflict and it slows things down</span>
+      </label>
+      <label class="option-label" data-q="15" data-score="1">
+        <input type="radio" name="q15" value="1">
+        <span class="option-dot"></span>
+        <span class="option-text">It gets handled case by case — there's goodwill but no clear process, so outcomes depend on the people involved</span>
+      </label>
+      <label class="option-label" data-q="15" data-score="2">
+        <input type="radio" name="q15" value="2">
+        <span class="option-dot"></span>
+        <span class="option-text">We have shared decision frameworks and the psychological safety to surface disagreements early — tension is part of the process, not a problem to avoid</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button class="btn-submit" id="submitBtn" onclick="showResults()">See my diagnosis →</button>
+    <p class="submit-note" id="submitNote">Answer all 15 questions to unlock your results</p>
+  </div>
+
+</div>
+
+<!-- ── Results ─────────────────────────────────────── -->
+<div class="container" id="results">
+
+  <div class="results-hero">
+    <p class="results-eyebrow">Your PM Health Score</p>
+    <div class="score-display" id="scoreDisplay">—</div>
+    <p class="score-max">out of 30</p>
+    <h2 class="results-level" id="resultsLevel">—</h2>
+    <p class="results-summary" id="resultsSummary">—</p>
+  </div>
+
+  <div class="dim-scores">
+    <h3>Score by dimension</h3>
+    <div class="dim-row">
+      <span class="dim-name">Discovery</span>
+      <div class="dim-bar-track"><div class="dim-bar-fill" id="barDiscovery" style="width:0%"></div></div>
+      <span class="dim-score-label" id="lblDiscovery">—</span>
+    </div>
+    <div class="dim-row">
+      <span class="dim-name">Problem Validation</span>
+      <div class="dim-bar-track"><div class="dim-bar-fill" id="barValidation" style="width:0%"></div></div>
+      <span class="dim-score-label" id="lblValidation">—</span>
+    </div>
+    <div class="dim-row">
+      <span class="dim-name">Roadmap</span>
+      <div class="dim-bar-track"><div class="dim-bar-fill" id="barRoadmap" style="width:0%"></div></div>
+      <span class="dim-score-label" id="lblRoadmap">—</span>
+    </div>
+    <div class="dim-row">
+      <span class="dim-name">Launch &amp; Impact</span>
+      <div class="dim-bar-track"><div class="dim-bar-fill" id="barLaunch" style="width:0%"></div></div>
+      <span class="dim-score-label" id="lblLaunch">—</span>
+    </div>
+    <div class="dim-row">
+      <span class="dim-name">Collaboration</span>
+      <div class="dim-bar-track"><div class="dim-bar-fill" id="barCollab" style="width:0%"></div></div>
+      <span class="dim-score-label" id="lblCollab">—</span>
+    </div>
+  </div>
+
+  <div class="recs-card">
+    <h3>Your top recommendations</h3>
+    <div id="recsContainer"></div>
+  </div>
+
+  <div class="results-cta">
+    <p>Want to turn this diagnosis into an action plan?</p>
+    <p class="cta-sub">A 20-minute call is often enough to identify the highest-leverage move for your specific context.</p>
+    <a href="#" class="btn-cta">Book a free 20-min call</a><br>
+    <button class="btn-retake" onclick="retake()">← Retake the scorecard</button>
+  </div>
+
+</div>
+
+<script>
+  const answers = {};
+  const TOTAL_Q = 15;
+
+  const dims = {
+    discovery:  [1, 2, 3],
+    validation: [4, 5],
+    roadmap:    [6, 7, 8],
+    launch:     [9, 10, 11],
+    collab:     [12, 13, 14, 15]
+  };
+  const dimMax = {
+    discovery:  6,
+    validation: 4,
+    roadmap:    6,
+    launch:     6,
+    collab:     8
+  };
+  const barIds = {
+    discovery:  'Discovery',
+    validation: 'Validation',
+    roadmap:    'Roadmap',
+    launch:     'Launch',
+    collab:     'Collab'
+  };
+
+  document.querySelectorAll('.option-label').forEach(label => {
+    label.addEventListener('click', () => {
+      const q = label.dataset.q;
+      const score = parseInt(label.dataset.score);
+
+      document.querySelectorAll(`.option-label[data-q="${q}"]`).forEach(l => {
+        l.classList.remove('selected-0','selected-1','selected-2');
+      });
+      label.classList.add(`selected-${score}`);
+      label.querySelector('input').checked = true;
+      answers[`q${q}`] = score;
+
+      document.getElementById(`card-${q}`).classList.add('answered');
+      updateProgress();
+    });
+  });
+
+  function updateProgress() {
+    const answered = Object.keys(answers).length;
+    const pct = (answered / TOTAL_Q) * 100;
+    document.getElementById('progressWrap').style.display = 'block';
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = `${answered} of ${TOTAL_Q}`;
+    if (answered === TOTAL_Q) {
+      document.getElementById('submitBtn').classList.add('active');
+      document.getElementById('submitNote').textContent = "All done — see your results below";
+    }
+  }
+
+  function showResults() {
+    if (Object.keys(answers).length < TOTAL_Q) return;
+
+    const total = Object.values(answers).reduce((a,b) => a+b, 0);
+
+    const dimScores = {};
+    for (const [dim, qs] of Object.entries(dims)) {
+      dimScores[dim] = qs.reduce((sum, q) => sum + (answers[`q${q}`] || 0), 0);
+    }
+
+    let level, summary;
+    if (total <= 10) {
+      level = "Foundations Missing";
+      summary = "Your product process has critical gaps — in how you learn from customers, validate problems, and collaborate across the organization. These aren't minor inefficiencies. They compound over time into products that don't grow and teams that don't trust each other. The good news: structural changes here have immediate, visible impact.";
+    } else if (total <= 18) {
+      level = "Building the Basics";
+      summary = "You have some solid practices in place, but they're not yet connected into a coherent system. Good habits exist in pockets — certain dimensions are working well while others are still reactive. The next step is creating consistency: turning the things you do well sometimes into the way you always work.";
+    } else if (total <= 24) {
+      level = "Good Process, Room to Grow";
+      summary = "Your product fundamentals are sound. You're learning from customers, making deliberate prioritization decisions, and working with the rest of the organization. The opportunity now is precision — closing the remaining gaps and moving from 'we mostly do this well' to 'this is how we always operate'.";
+    } else {
+      level = "High-Performance PM";
+      summary = "You're operating at a level most product teams don't reach. Discovery is continuous, decisions are transparent, launches are coordinated, and the organization is aligned. The focus now is on scaling what works — and making sure your process holds as the team and product grow.";
+    }
+
+    const recs = buildRecs(dimScores, answers, total);
+
+    document.getElementById('scoreDisplay').textContent = total;
+    document.getElementById('resultsLevel').textContent = level;
+    document.getElementById('resultsSummary').textContent = summary;
+
+    setBar('Discovery',  dimScores.discovery,  dimMax.discovery);
+    setBar('Validation', dimScores.validation, dimMax.validation);
+    setBar('Roadmap',    dimScores.roadmap,    dimMax.roadmap);
+    setBar('Launch',     dimScores.launch,     dimMax.launch);
+    setBar('Collab',     dimScores.collab,     dimMax.collab);
+
+    const container = document.getElementById('recsContainer');
+    container.innerHTML = recs.map((r, i) => `
+      <div class="rec-item">
+        <div class="rec-num">${i+1}</div>
+        <div class="rec-content">
+          <p class="rec-title">${r.title}</p>
+          <p class="rec-desc">${r.desc}</p>
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('scorecardForm').style.display = 'none';
+    document.getElementById('progressWrap').style.display = 'none';
+    document.getElementById('results').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function setBar(id, score, max) {
+    const pct = (score / max) * 100;
+    const fill = document.getElementById(`bar${id}`);
+    const lbl  = document.getElementById(`lbl${id}`);
+    lbl.textContent = `${score}/${max}`;
+    fill.classList.remove('low','mid','high');
+    if (pct < 40) fill.classList.add('low');
+    else if (pct < 70) fill.classList.add('mid');
+    else fill.classList.add('high');
+    setTimeout(() => { fill.style.width = pct + '%'; }, 100);
+  }
+
+  function buildRecs(dimScores, answers, total) {
+    const recs = [];
+
+    // Sort dims by score ratio ascending (weakest first)
+    const sorted = Object.entries(dimScores)
+      .map(([dim, score]) => ({ dim, score, ratio: score / dimMax[dim] }))
+      .sort((a, b) => a.ratio - b.ratio);
+
+    const weakest = sorted[0].dim;
+    const second  = sorted[1].dim;
+
+    const pool = {
+      discovery: [
+        {
+          title: "Make triangulation a habit, not a project",
+          desc: "The most common discovery trap is picking one source of truth — usually either conversations or data — and optimizing for it. Usage data tells you where customers struggle; conversations tell you why. Without both, you're solving the wrong problem with confidence."
+        },
+        {
+          title: "Establish a weekly discovery rhythm — even a lightweight one",
+          desc: "Two customer conversations a week, every week, is more valuable than a quarterly research sprint. Consistency matters more than depth at this stage. A structured interview guide and a calendar block are all you need to start."
+        },
+        {
+          title: "Build a direct line from customer insights to roadmap decisions",
+          desc: "If insights live in decks nobody reads, discovery isn't actually influencing your product. The fix isn't more research — it's creating a visible link between what you learn and what you prioritize, so the team can trace every decision back to a validated customer problem."
+        }
+      ],
+      validation: [
+        {
+          title: "Start an assumptions log — and review it monthly",
+          desc: "Most product bets fail not because of poor execution, but because the underlying assumption was wrong and nobody tested it. Document your top 5–10 current assumptions explicitly, rank them by risk and uncertainty, and make revisiting them a team habit."
+        },
+        {
+          title: "Separate problem validation from solution validation",
+          desc: "The most expensive mistake in product is building the right solution to the wrong problem. Before committing to build anything — regardless of whether your team uses AI, code, or no-code — validate that the business problem is real, urgent, and worth solving."
+        }
+      ],
+      roadmap: [
+        {
+          title: "Shift from feature timelines to adoption stage thinking",
+          desc: "Teams that think in features and dates optimize for shipping. Teams that think in adoption stages — what moves a customer from awareness to activation, from activation to retention, from retention to expansion — optimize for growth. Map your next three initiatives to a specific stage transition and see if the framing changes what you build."
+        },
+        {
+          title: "Combine framework rigor with product judgment — and make the reasoning visible",
+          desc: "Prioritization frameworks like RICE or ICE are useful scaffolding, not final answers. The best product decisions combine structured criteria with strategic intuition — and the team can articulate both. If your framework is producing decisions that don't feel right, the inputs need work, not the framework."
+        },
+        {
+          title: "Create a lightweight intake process for unplanned requests",
+          desc: "If every stakeholder request can re-prioritize your roadmap, your team can't build with confidence. A simple intake form with a weekly triage review creates predictability without bureaucracy — and gives you a defensible, transparent way to say 'not now' without damaging relationships."
+        }
+      ],
+      launch: [
+        {
+          title: "Define success metrics before you build, not after you ship",
+          desc: "Writing the measurement criteria before development begins changes the quality of every downstream decision — what to build, how much to build, and when to stop iterating. One question before every initiative: what does 'this worked' look like in 4 weeks, and how will we know?"
+        },
+        {
+          title: "Treat launch as a cross-functional event, not a deployment",
+          desc: "In B2B especially, a feature that ships without internal enablement is a feature that doesn't get used. Product's job doesn't end at release — it includes making sure CS can explain it, marketing can position it, and sales can sell with it. Build this coordination into every launch, not as an afterthought."
+        },
+        {
+          title: "Close the loop: post-launch review is part of the cycle",
+          desc: "Every initiative is a hypothesis. If you don't review adoption data and iterate after launch, you're running experiments without reading the results. A 30-minute structured review — what we expected, what happened, why, what changes — compounds into institutional knowledge over time."
+        }
+      ],
+      collab: [
+        {
+          title: "Turn customer-facing teams into discovery partners, not a request queue",
+          desc: "Sales and CS talk to customers every day. That's an enormous signal source most product teams underuse. The difference between a request queue and a discovery partnership is structure: a shared way to capture patterns, a monthly synthesis session, and a feedback loop that shows those teams their insights actually mattered."
+        },
+        {
+          title: "Make the roadmap and its reasoning visible to the whole organization",
+          desc: "When other teams don't understand why product is building what it's building, every cross-functional interaction becomes a negotiation. Transparency about both the roadmap and the reasoning behind it reduces friction, builds trust, and makes it easier to say no to things that don't fit the strategy."
+        },
+        {
+          title: "Give product direct access to customers — without an intermediary",
+          desc: "Hearing about customers through CS summaries or sales notes is one layer of abstraction away from reality. Direct access — even one customer session per week — gives product teams a qualitative grounding that no amount of secondhand feedback can replace. Make this a standing expectation, not a favor."
+        }
+      ]
+    };
+
+    // Pull best rec for weakest dim
+    if (pool[weakest]) recs.push(pool[weakest][0]);
+
+    // Pull best rec for second weakest (different from first)
+    if (pool[second] && second !== weakest) recs.push(pool[second][0]);
+
+    // Add a third specific rec based on individual low-scoring answers
+    const specific = [
+      { q: 7, score: 0, rec: { title: "Reframe your roadmap around customer stages, not feature timelines", desc: "If your team's default lens is 'what ships and when', you're optimizing for output, not outcomes. Try mapping your next quarter's work to a single question: what moves more customers from one adoption stage to the next? That shift in framing often reveals that you're building the wrong things — or building the right things in the wrong order." }},
+      { q: 10, score: 0, rec: { title: "Shift launch from a deployment event to a cross-functional moment", desc: "If other teams find out about new features when they go live, you're leaving adoption on the table. A short pre-launch alignment — CS, marketing, sales — to align on messaging and enablement materials takes 30 minutes and dramatically increases the likelihood that what you build actually gets used." }},
+      { q: 14, score: 0, rec: { title: "Remove the intermediary between product and your customers", desc: "If product only hears from customers through other teams, the signal is always filtered. Make direct customer access a standing expectation — weekly sessions, regular sit-ins on CS calls, or access to session recordings. The patterns you notice firsthand are different from the ones that get relayed to you." }},
+      { q: 5, score: 0, rec: { title: "Document your top assumptions and start testing the riskiest ones first", desc: "Every product decision rests on assumptions — about what customers want, how the market works, what problems are worth solving. Making those assumptions explicit and ranking them by risk is the single most underrated practice in early-stage product. It turns strategy from intuition into a testable set of hypotheses." }},
+    ];
+
+    for (const s of specific) {
+      if (recs.length >= 3) break;
+      if (answers[`q${s.q}`] === s.score) {
+        const alreadyIncluded = recs.find(r => r.title === s.rec.title);
+        if (!alreadyIncluded) recs.push(s.rec);
+      }
+    }
+
+    // Fill to 3 if needed
+    const allRecs = Object.values(pool).flat();
+    for (const r of allRecs) {
+      if (recs.length >= 3) break;
+      if (!recs.find(x => x.title === r.title)) recs.push(r);
+    }
+
+    return recs.slice(0, 3);
+  }
+
+  function retake() {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.option-label').forEach(l => {
+      l.classList.remove('selected-0','selected-1','selected-2');
+      l.querySelector('input').checked = false;
+    });
+    document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
+    document.getElementById('submitBtn').classList.remove('active');
+    document.getElementById('submitNote').textContent = 'Answer all 15 questions to unlock your results';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressCount').textContent = '0 of 15';
+    ['Discovery','Validation','Roadmap','Launch','Collab'].forEach(d => {
+      document.getElementById(`bar${d}`).style.width = '0%';
+    });
+    document.getElementById('results').style.display = 'none';
+    document.getElementById('scorecardForm').style.display = 'block';
+    document.getElementById('progressWrap').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
